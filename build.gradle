@@ -25,7 +25,7 @@ plugins {
   id 'java-gradle-plugin'
   id 'maven-publish'
   id "com.diffplug.spotless" version '6.19.0'
-  id "io.github.gradle-nexus.publish-plugin" version "1.0.0"
+  //id "io.github.gradle-nexus.publish-plugin" version "1.0.0"
 }
 
 apply plugin: "com.diffplug.spotless"
@@ -49,7 +49,7 @@ repositories {
   mavenCentral()
 }
 
-nexusPublishing {
+/*nexusPublishing {
   repositories {
     sonatype {
       username = System.getProperty('ossrhUsername')
@@ -61,7 +61,7 @@ nexusPublishing {
 
   clientTimeout = Duration.ofSeconds(300)
   connectTimeout = Duration.ofSeconds(60)
-}
+}*/
 
 dependencies {
   implementation 'com.google.code.gson:gson:2.8.8'
@@ -77,7 +77,7 @@ dependencies {
 }
 
 apply plugin: 'maven-publish'
-apply plugin: 'signing'
+//apply plugin: 'signing'
 
 tasks.register("sourcesJar", Jar).configure {
   group = JavaBasePlugin.DOCUMENTATION_GROUP
@@ -134,16 +134,24 @@ publishing {
       }
     }
   }
+  repositories {
+    maven {
+      url 's3://tgl.maven'
+      authentication {
+        awsIm(AwsImAuthentication)
+      }
+    }
+  }
 }
 
-signing {
+/*signing {
   sign publishing.publications
-}
+}*/
 
 /*
  * Checks if release tag matches version and current commit
  */
-def matchesVersion(versionTag) {
+/*def matchesVersion(versionTag) {
   def properties = new Properties()
   file("${rootDir}/gradle.properties").withInputStream { properties.load(it) }
   def releaseTag = "${properties.getProperty("versionMajor")}." +
@@ -151,9 +159,9 @@ def matchesVersion(versionTag) {
           "${properties.getProperty("versionPatch")}"
 
   return releaseTag == versionTag
-}
+}*/
 
-task validateReleaseTag {
+/*task validateReleaseTag {
   description = 'Validate the release tag matches the release version present on commit'
 
   doLast {
@@ -165,16 +173,16 @@ task validateReleaseTag {
       commandLine tagsMatch
     }
   }
-}
+}*/
 
-afterEvaluate {
+/*afterEvaluate {
   tasks.findByName("publishApkscaleReleasePublicationToSonatypeRepository").mustRunAfter("validateReleaseTag")
   tasks.findByName("publishApkscaleReleasePublicationToSonatypeRepository").dependsOn("validateReleaseTag")
   tasks.findByName("closeAndReleaseSonatypeStagingRepository").mustRunAfter("publishApkscaleReleasePublicationToSonatypeRepository")
   tasks.findByName("closeAndReleaseSonatypeStagingRepository").dependsOn("publishApkscaleReleasePublicationToSonatypeRepository")
-}
+}*/
 
-task incrementVersion() {
+/*task incrementVersion() {
   description = 'Increment the version after a release'
 
   doLast {
@@ -198,11 +206,11 @@ task incrementVersion() {
       commandLine "git", "checkout", "${gitBranch}"
     }
 
-    /*
+    *//*
      * Only update the version on upstream branch if the version matches tag. It is possible
      * these values do not match if a job is performed on an earlier commit and a PR
      * with a version update occurs later in history.
-     */
+     *//*
     if (matchesVersion(circleTag)) {
       exec {
         workingDir "${rootDir}"
@@ -234,4 +242,4 @@ task incrementVersion() {
       }
     }
   }
-}
+}*/

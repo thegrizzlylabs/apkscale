@@ -1,3 +1,11 @@
+# TGL Readme
+
+Increment version number in gradle.properties
+Publish locally: `./gradlew publishApkscaleReleasePublicationToMavenLocal`
+Publish to TGL S3: `./gradlew publishApkscaleReleasePublicationToMavenRepository`
+
+Make sure to have AWS CLI configured locally with credentials.
+
 # apkscale
 
 [![CircleCI](https://circleci.com/gh/twilio/apkscale.svg?style=svg)](https://circleci.com/gh/twilio/apkscale)
