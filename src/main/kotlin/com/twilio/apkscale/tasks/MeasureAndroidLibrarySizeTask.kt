@@ -237,7 +237,6 @@ open class MeasureAndroidLibrarySizeTask @Inject constructor(
                   mavenCentral()
                 }
                 dependencies {
-                    ${resolveDependencies(dependencyConfiguration, aarLibraryFile)}
                     $dependencyConfiguration files("${aarLibraryFile.absolutePath}")
                 }
                 """.trimIndent()
